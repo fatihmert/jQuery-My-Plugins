@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<title>jQuery - copyToClipboard</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+<script type="text/javascript">
+(function($){
+  /*
+  * Version 0.1
+  * Release: 14.04.2016 16:51
+  
+    @param1: String
+    @param2: String
+    
+    # Copy text with HTML tags,          @param1 = "html"
+    # Copy text                          @param1 = "text"
+    # Copy title                         @param1 = "title"
+    # Copy class                         @param1 = "class"
+    # Copy id                            @param1 = "id"
+    # Copy url with href attribute       @param1 = "href"
+    # Copy url with src attribute        @param1 = "src"
+    # Copy attribute                     @param1 = "attr" & @param2 = "attr-name"
+  
+  */
+	$.fn.copyToClipboard = function(){
+		var $tmp = $('<input>');
+		$('body').append($tmp);
+		
+		var act = null;
+		var type = null;
+		
+		if(arguments[0] === undefined){
+			type = "text";
+		}else{
+			type = arguments[0].toString().toLowerCase();
+		}
+		
+		if(type == "val" || type == "value"){act = this.val();
+		}else if(type == "html"){act = this.html();
+		}else if(type == "text"){act = this.text();
+		}else if(type == "title"){act = this.attr(type);
+		}else if(type == "class"){act = this.attr(type);
+		}else if(type == "id"){act = this.attr(type);
+		}else if(type == "href"){act = this.attr(type);
+		}else if(type == "src"){act = this.attr(type);}
+		else if(
+			arguments[0] !== undefined &&
+			arguments[1] !== undefined &&
+			arguments[0] == "attr"
+		){
+			act = this.attr(arguments[1].toString());
+		}
+		
+		$tmp.val(act).select();
+		document.execCommand("copy");
+		$tmp.remove();
+		
+		return this;
+	};
+}(jQuery));
+
+$(document).ready(function(){
+	$('h1').click(function(){
+		$(this).copyToClipboard();
+		//OR
+		//$(this).copyToClipboard("text");
+	});
+	
+	$('h3').click(function(){
+		$(this).copyToClipboard("title");
+		//OR
+		//$(this).copyToClipboard("attr","title");
+	});
+	
+	$('span').click(function(){
+		$(this).copyToClipboard("attr","data-copy");
+	});
+	
+});
+</script>
+</head>
+<body>
+	<h1>Sample H1 Text</h1>
+	<h3 title="Sample Title">Click me</h3>
+	<span data-copy="Copyright github/fatihmert/jQuery-My-Plugins">Sample attribute</span>
+</body>
+</html>
