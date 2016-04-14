@@ -34,32 +34,4 @@
 		
 		return this;
 	};
-
-	$.fn.clickAndEnter = function(input,func){
-		this.click(function(){func();});
-		$(input.toString()).keyup(function(e){
-			if(!e) e = window.event;
-			var _KC = e.which || e.keyCode;
-			if(_KC == 13){
-				func();
-			}
-		});
-		return this;
-	};
-	
-	$.fn.disablePrintScreen = function(){
-		this.keyup(function(e){
-			if(!e) e = window.event;
-			var _KC = e.which || e.keyCode;
-			if(_KC == 44){
-				if(window.clipboardData){
-					window.clipboardData.setData('text','');
-					return this;
-				}else{
-					$('<i></i>').copyToClipboard();
-					return this;
-				}
-			}
-		});
-	};
 }(jQuery));
